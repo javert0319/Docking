@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             ARouter.getInstance().build("/halo/main").navigation()
         }
         bt_hdl.setOnClickListener {
+            L.i("上传测试")
             ARouter.getInstance().build("/hdl/main").navigation()
         }
         /*
