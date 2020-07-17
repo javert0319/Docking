@@ -1,1 +1,1 @@
-include ':app', ':plugin.halo', ':plugin.hdl', ':lib.frame',':lib.print'
+include ':app', ':plugin.music', ':plugin.hdl', ':lib.frame',':lib.print',':lib.style',':lib.network',':lib.mvvm'

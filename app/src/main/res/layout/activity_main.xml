@@ -7,6 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     <Button
             android:id="@+id/bt_halo"
             android:layout_width="match_parent"
@@ -17,7 +24,7 @@
             android:text="HALO"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button
             android:id="@+id/bt_hdl"

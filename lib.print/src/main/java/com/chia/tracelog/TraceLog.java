@@ -22,7 +22,7 @@ public class TraceLog implements Printer {
     private TraceLogImpl impl;
     private static Trace defaultTraces;
 
-    private TraceLog(TraceLog.Builder builder) {
+    private TraceLog(Builder builder) {
         this.impl = new TraceLogImpl();
         this.impl.setDefaultTag(builder.tag);
         Iterator var2 = builder.traces.iterator();
@@ -114,12 +114,12 @@ public class TraceLog implements Printer {
         public Builder() {
         }
 
-        public TraceLog.Builder setDefaultTag(String tag) {
+        public Builder setDefaultTag(String tag) {
             this.tag = tag;
             return this;
         }
 
-        public TraceLog.Builder addTrace(Trace trace) {
+        public Builder addTrace(Trace trace) {
             this.traces.add(trace);
             return this;
         }

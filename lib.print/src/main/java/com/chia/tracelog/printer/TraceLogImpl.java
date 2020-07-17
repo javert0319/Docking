@@ -8,14 +8,17 @@ import com.chia.logbase.Trace;
 import com.chia.tracelog.parser.Constant;
 import com.chia.tracelog.parser.ObjectUtil;
 import com.chia.tracelog.utils.Util;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;

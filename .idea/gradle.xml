@@ -12,9 +12,12 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib.frame" />
+            <option value="$PROJECT_DIR$/lib.mvvm" />
+            <option value="$PROJECT_DIR$/lib.network" />
             <option value="$PROJECT_DIR$/lib.print" />
-            <option value="$PROJECT_DIR$/plugin.halo" />
+            <option value="$PROJECT_DIR$/lib.style" />
             <option value="$PROJECT_DIR$/plugin.hdl" />
+            <option value="$PROJECT_DIR$/plugin.music" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

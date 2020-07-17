@@ -33,7 +33,31 @@ android {
         generateStubs = true
         arguments {
             arg("moduleName", project.getName())
-            arg('eventBusIndex', 'cn.nbhope.smarthome.EventBusIndex')
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            if (rootProject.ext.is_build_module) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+                java.srcDirs += "src/main/debug/java/"
+                res.srcDirs += "src/main/debug/res/"
+            } else {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                java.srcDirs += "src/main/release/java/"
+                resources {
+                    exclude 'src/debug/*'
+                }
+            }
+            java.srcDirs += 'src/main/kotlin'
         }
     }
 }
@@ -56,10 +80,12 @@ dependencies {
     //LeakCanary
     debugImplementation rootProject.ext.dependencies.leakcanary
     releaseImplementation rootProject.ext.dependencies.leakcanary_no_op
-    implementation project(':lib.frame')
-    implementation project(':lib.print')
+    implementation rootProject.ext.dependencies.bindingadapter
+    implementation rootProject.ext.dependencies.bindingadapter_recyclerview
+    api rootProject.ext.dependencies.swipelayout
+    implementation project(':lib.network')
     if (!rootProject.ext.is_build_module) {
-        implementation project(':plugin.halo')
+        implementation project(':plugin.music')
         implementation project(':plugin.hdl')
     }
 }

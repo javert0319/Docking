@@ -11,25 +11,25 @@ import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
+import com.lib.frame.view.simple.BaseSimpleActivity
 import com.lib.utils.print.L
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseSimpleActivity() {
 
     private val handler: Handler = Handler()
     private var position = 0
     private var notificationManager:NotificationManager ?= null
     private var notification:Notification ?= null //下载通知进度提示
     private var builder: NotificationCompat.Builder ?= null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initVarAndView(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
         ARouter.getInstance().inject(this)
+        initToolbar("Docking",true)
         initNotification()
         bt_halo.setOnClickListener {
             Log.i("jiawei","MainActivity onCreate Notification")
-            ARouter.getInstance().build("/halo/main").navigation()
+            ARouter.getInstance().build("/music/main").navigation()
         }
         bt_hdl.setOnClickListener {
             L.i("Docking框架上传测试")

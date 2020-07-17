@@ -36,9 +36,9 @@ public abstract class LogPattern {
 
     public static LogPattern compile(String pattern) {
         try {
-            return pattern == null ? null : (new LogPattern.Compiler()).compile(pattern);
+            return pattern == null ? null : (new Compiler()).compile(pattern);
         } catch (Exception var2) {
-            return new LogPattern.PlainLogPattern(0, 0, pattern);
+            return new PlainLogPattern(0, 0, pattern);
         }
     }
 
@@ -66,23 +66,23 @@ public abstract class LogPattern {
                 this.position = 0;
                 this.patternString = string;
                 this.queue = new ArrayList();
-                this.queue.add(new LogPattern.ConcatenateLogPattern(0, 0, new ArrayList()));
+                this.queue.add(new ConcatenateLogPattern(0, 0, new ArrayList()));
 
                 while(string.length() > this.position) {
                     int index = string.indexOf("%", this.position);
                     int bracketIndex = string.indexOf(")", this.position);
                     if (this.queue.size() > 1 && bracketIndex < index) {
-                        ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.PlainLogPattern(0, 0, string.substring(this.position, bracketIndex)));
-                        ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 2)).addPattern((LogPattern)this.queue.remove(this.queue.size() - 1));
+                        ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new PlainLogPattern(0, 0, string.substring(this.position, bracketIndex)));
+                        ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 2)).addPattern((LogPattern)this.queue.remove(this.queue.size() - 1));
                         this.position = bracketIndex + 1;
                     }
 
                     if (index == -1) {
-                        ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.PlainLogPattern(0, 0, string.substring(this.position)));
+                        ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new PlainLogPattern(0, 0, string.substring(this.position)));
                         break;
                     }
 
-                    ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.PlainLogPattern(0, 0, string.substring(this.position, index)));
+                    ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new PlainLogPattern(0, 0, string.substring(this.position, index)));
                     this.position = index;
                     this.parse();
                 }
@@ -94,10 +94,10 @@ public abstract class LogPattern {
         private void parse() {
             Matcher matcher;
             if ((matcher = this.findPattern(PERCENT_PATTERN)) != null) {
-                ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.PlainLogPattern(0, 0, "%"));
+                ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new PlainLogPattern(0, 0, "%"));
                 this.position = matcher.end();
             } else if ((matcher = this.findPattern(NEWLINE_PATTERN)) != null) {
-                ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.PlainLogPattern(0, 0, "\n"));
+                ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new PlainLogPattern(0, 0, "\n"));
                 this.position = matcher.end();
             } else {
                 int count;
@@ -108,7 +108,7 @@ public abstract class LogPattern {
                             if ((matcher = this.findPattern(CONCATENATE_PATTERN)) != null) {
                                 count = Integer.parseInt(matcher.group(1) == null ? "0" : matcher.group(1));
                                 length = Integer.parseInt(matcher.group(3) == null ? "0" : matcher.group(3));
-                                this.queue.add(new LogPattern.ConcatenateLogPattern(count, length, new ArrayList()));
+                                this.queue.add(new ConcatenateLogPattern(count, length, new ArrayList()));
                                 this.position = matcher.end();
                             } else {
                                 throw new IllegalArgumentException();
@@ -116,12 +116,12 @@ public abstract class LogPattern {
                         } else {
                             count = Integer.parseInt(matcher.group(1) == null ? "0" : matcher.group(1));
                             length = Integer.parseInt(matcher.group(3) == null ? "0" : matcher.group(3));
-                            ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.ThreadNameLogPattern(count, length));
+                            ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new ThreadNameLogPattern(count, length));
                             this.position = matcher.end();
                         }
                     } else {
                         String dateFormat = matcher.group(2);
-                        ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.DateLogPattern(0, 0, dateFormat));
+                        ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new DateLogPattern(0, 0, dateFormat));
                         this.position = matcher.end();
                     }
                 } else {
@@ -129,7 +129,7 @@ public abstract class LogPattern {
                     length = Integer.parseInt(matcher.group(3) == null ? "0" : matcher.group(3));
                     int countCaller = Integer.parseInt(matcher.group(5) == null ? "0" : matcher.group(5));
                     int lengthCaller = Integer.parseInt(matcher.group(7) == null ? "0" : matcher.group(7));
-                    ((LogPattern.ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new LogPattern.CallerLogPattern(count, length, countCaller, lengthCaller));
+                    ((ConcatenateLogPattern)this.queue.get(this.queue.size() - 1)).addPattern(new CallerLogPattern(count, length, countCaller, lengthCaller));
                     this.position = matcher.end();
                 }
             }

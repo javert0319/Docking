@@ -36,4 +36,6 @@ dependencies {
     androidTestImplementation rootProject.ext.dependencies.runner
     implementation rootProject.ext.dependencies.design
     implementation rootProject.ext.dependencies.orhanobut_logger
+    implementation rootProject.ext.dependencies.gson
+    implementation project(':lib.style')
 }

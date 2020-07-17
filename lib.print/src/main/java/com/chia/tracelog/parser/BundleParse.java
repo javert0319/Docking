@@ -1,6 +1,7 @@
 package com.chia.tracelog.parser;
 
 import android.os.Bundle;
+
 import java.util.Iterator;
 
 /**

@@ -29,7 +29,7 @@ public class DiskLogTrace implements Trace {
     private int maxCacheSize = 10485760;
     private boolean useCacheDir = true;
     private String path = null;
-    private DiskLogTrace.WriteHandler writeHandler;
+    private WriteHandler writeHandler;
 
     public DiskLogTrace(Context context, int maxCacheSize, String folder, String fileName, boolean useCacheDir) {
         this.context = context;
@@ -80,7 +80,7 @@ public class DiskLogTrace implements Trace {
 
         HandlerThread ht = new HandlerThread("TraceLog." + System.currentTimeMillis());
         ht.start();
-        this.writeHandler = new DiskLogTrace.WriteHandler(ht.getLooper(), this.path, this.maxCacheSize);
+        this.writeHandler = new WriteHandler(ht.getLooper(), this.path, this.maxCacheSize);
     }
 
     private String generatePath(String dir) {
@@ -131,14 +131,13 @@ public class DiskLogTrace implements Trace {
     }
 
     public boolean isLoggable(String tag, int priority,boolean isLoggable) {
-        return isLoggable;
+        return true;//日志是否写入文件
     }
 
     public void log(int priority, String tag, String message) {
         if (!TextUtils.isEmpty(message)) {
             this.saveLogToFile(tag, message);
         }
-
     }
 
     private static class WriteHandler extends Handler {
@@ -172,14 +171,12 @@ public class DiskLogTrace implements Trace {
                 this.clearCache(filePath);
                 this.lastClearTime = System.currentTimeMillis();
             }
-
         }
 
         private void clearCache(String filePath) {
             if (!Util.checkDirSize(filePath, this.maxCacheSize)) {
                 Util.deleteAll(filePath);
             }
-
         }
     }
 }

@@ -1,22 +1,21 @@
 apply plugin: 'com.android.library'
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
-
-
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        if (rootProject.ext.is_build_module) {
+            multiDexEnabled true
+        }
     }
 
     buildTypes {
@@ -25,14 +24,55 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation(rootProject.ext.dependencies.espresso_core, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api rootProject.ext.dependencies.supportv7
+    api rootProject.ext.dependencies.design
+    testImplementation rootProject.ext.dependencies.junit
+    api rootProject.ext.dependencies.ImageProxy
+    api rootProject.ext.dependencies.BRVAH
+
+    api(rootProject.ext.dependencies.rxjava2) {
+        exclude group: 'com.android.support', module: 'support-v13'
+    }
+    api rootProject.ext.dependencies.rxlifecycle
+    api rootProject.ext.dependencies.rxlifecycleAndroid
+    api rootProject.ext.dependencies.rxlifecycleComponents
+    //api rootProject.ext.dependencies.title_bar
+    api rootProject.ext.dependencies.barlibrary
+    api rootProject.ext.dependencies.eventbus
+    api rootProject.ext.dependencies.material_dialogs
+    api rootProject.ext.dependencies.flexibledivider
+    api rootProject.ext.dependencies.brvahbinding
+    api rootProject.ext.dependencies.y_divideritemdecoration
+    //api rootProject.ext.dependencies.circleimageview
+
+    //LifeCycle
+    api rootProject.ext.dependencies.lifecycle_runtime
+    annotationProcessor rootProject.ext.dependencies.lifecycle_compiler
+    api rootProject.ext.dependencies.lifecycle_common_java8
+
+    //LiveData 和 ViewModel
+    api rootProject.ext.dependencies.lifecycle_extensions
+    //Paging
+    api rootProject.ext.dependencies.paging_runtime
+    api rootProject.ext.dependencies.paging_rxjava
+    //Room
+    /*api rootProject.ext.dependencies.room_runtime
+    annotationProcessor rootProject.ext.dependencies.room_compiler*/
+    api project (':lib.print')
+    api project(':lib.style')
+    //api project(':lib.login')
 }
